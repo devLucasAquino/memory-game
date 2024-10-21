@@ -23,10 +23,23 @@ const firstCards = [
 ];
 
 const secondCards = [...firstCards];
-const cards = firstCards.concat(secondCards);
+
+
+function shuffleArray(arr) {
+    // Loop em todos os elementos
+for (let i = arr.length - 1; i > 0; i--) {
+        // Escolhendo elemento aleatório
+    const j = Math.floor(Math.random() * (i + 1));
+    // Reposicionando elemento
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+}
+// Retornando array com aleatoriedade
+return arr;
+}
 
 
 export function GameBoard() {
+    const [cards, setCards] = useState(() => shuffleArray(firstCards.concat(secondCards)));
     const [ openedCards, setOpenedCards ] = useState<number[]>([]);
     const [ matchedCards, setMatchedCards ] = useState<number[]>([]);
 
@@ -35,6 +48,7 @@ export function GameBoard() {
           setOpenedCards((prev) => [...prev, index]);
         }
     }
+
 
     useEffect(() => {
         if (openedCards.length === 2) {
@@ -45,7 +59,7 @@ export function GameBoard() {
     
           setTimeout(() => setOpenedCards([]), 1000);
         }
-      }, [openedCards]);
+      }, [openedCards, cards]);
 
     return (
             <section className="grid grid-cols-6 grid-rows-3 gap-2">
