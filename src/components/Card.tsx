@@ -1,6 +1,6 @@
 
 
-interface CardProps{
+export interface CardProps{
     img: string;
     index: number;
     onClick: (index: number) => void;

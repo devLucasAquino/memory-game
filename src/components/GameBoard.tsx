@@ -7,7 +7,7 @@ import fastasmao from "../assets/BigGhost.webp";
 import saltidao from "../assets/Saltidão.webp";
 import pairulito from "../assets/Pairulito.webp";
 import musculoso from "../assets/Muscleman.webp";
-import { Card } from "./Card";
+import { Card, CardProps } from "./Card";
 import { useEffect, useState } from "react";
 
 const firstCards = [
@@ -39,9 +39,12 @@ return arr;
 
 
 export function GameBoard() {
-    const [cards, setCards] = useState(() => shuffleArray(firstCards.concat(secondCards)));
+    const [ cards, setCards ] = useState(() => shuffleArray(firstCards.concat(secondCards)));
     const [ openedCards, setOpenedCards ] = useState<number[]>([]);
     const [ matchedCards, setMatchedCards ] = useState<number[]>([]);
+
+    const [ playerOne, setPlayerOne ] = useState<string>("PLAYER 1");
+    const [ playerTwo, setPlayerTwo ] = useState<string>("PLAYER 2");
 
     function openCard(index: number) {
         if (openedCards.length < 2 && !openedCards.includes(index)) {
@@ -62,8 +65,27 @@ export function GameBoard() {
       }, [openedCards, cards]);
 
     return (
+        <>
+            <div className="bg-blue-950 w-full h-auto text-white justify-around font-bold flex px-2 py-4 text-xl mb-4 rounded-lg">
+                <div className="flex gap-6">
+                    <h1>PLAYER 1: </h1>
+                    <input 
+                        type="text" 
+                        value={playerOne} 
+                        onChange={(e) => setPlayerOne(e.target.value)}
+                        className="bg-blue-300 rounded-md text-center focus:outline-none w-1/2" />
+                </div>
+                <div className="flex gap-6">
+                    <h1>PLAYER 2: </h1>
+                    <input 
+                        type="text" 
+                        value={playerTwo}
+                        onChange={(e) => setPlayerTwo(e.target.value)} 
+                        className="bg-blue-300 rounded-md text-center focus:outline-none w-1/2" />
+                </div>
+            </div>
             <section className="grid grid-cols-6 grid-rows-3 gap-2">
-                {cards.map((card, index) => (
+                {cards.map((card: CardProps, index: number) => (
                     <Card 
                         key={index}
                         img={card.img}
@@ -73,5 +95,6 @@ export function GameBoard() {
                     />
                 ))}
             </section>
+        </>
         )
 }
